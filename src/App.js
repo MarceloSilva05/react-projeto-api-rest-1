@@ -1,23 +1,34 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-
+import api from './service/Api';
 function App() {
+  const [pessoas, setPessoas] = useState([]);
+
+  useEffect(() => {
+    api.get("/?results=8")
+      .then((response) => setPessoas(response.data.results))
+      .catch((err) => {
+        console.error("erro" + err);
+      });
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="conteudo">
+      <h1>Pessoas Cadastradas</h1>
+ <div className="tudo">
+      {pessoas.map((post, key) => {
+        return (
+          
+            <div className="card" key={key}>
+              
+                <img src={post.picture.large} />
+                <h1>{post.name.first}</h1>
+             
+            </div>
+          
+        );
+      })}
+ </div> 
+
     </div>
   );
 }
